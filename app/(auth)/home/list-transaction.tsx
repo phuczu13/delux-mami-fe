@@ -73,7 +73,8 @@ const ListTransaction = () => {
 
   return (
     <ScrollView>
-        <View className='px-5 pt-10'>
+        <View className='pt-10'>
+          <View className='p-5'>
             <View className='flex-row items-center gap-4'>
                 <TouchableOpacity className="bg-slate-200 flex justify-center items-center w-10 h-10 rounded-full" onPress={() => router.push('/Home')}>
                     <Ionicons name="chevron-back" size={24} color="black" />
@@ -105,6 +106,7 @@ const ListTransaction = () => {
                     </View>
                 ))}
             </View>
+          </View> 
         </View>
     </ScrollView>
   )

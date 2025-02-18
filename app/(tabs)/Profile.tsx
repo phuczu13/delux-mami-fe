@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { router, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
 const ProfileScreen: React.FC = () => {
 
@@ -15,11 +15,12 @@ const ProfileScreen: React.FC = () => {
           <View className="flex-row gap-4 items-center">
             {/* Avatar */}
             <Image
-              className="border"
+              className="border border-[#7F3DFF]"
               source={{
                 uri: "https://i.pinimg.com/736x/58/d3/43/58d343ff7b3636efd0c18c7d6d2ccac5.jpg",
               }}
               style={{ width: 80, height: 80, borderRadius: 40 }}
+
             />
             {/* Username */}
             <View>
