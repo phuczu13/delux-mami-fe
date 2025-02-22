@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect }from 'react';
 import { ScrollView, View, Text, TextInput, TouchableOpacity, Switch } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import "nativewind";
 import { useRouter } from 'expo-router';
+
 
 const IncomeScreen = () => {
   const [amount, setAmount] = useState('0');

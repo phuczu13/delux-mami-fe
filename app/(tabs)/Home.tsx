@@ -49,7 +49,7 @@ const HomeScreen: React.FC = () => {
       <View className="p-5">
         <View className="flex-row w-full justify-between items-center">
           <View className="w-1/6">
-            <TouchableOpacity 
+            <TouchableOpacity testID="profile-button"
             onPress={() => router.push("/(tabs)/Profile")}
             >
               <Image
@@ -162,7 +162,7 @@ const HomeScreen: React.FC = () => {
             className="p-2"
             onPress={() => setModalVisible(true)}
           >
-            <PlusCircle size={32} color="black" />
+            <PlusCircle size={32} color="black" testID="open-modal"/>
           </TouchableOpacity>
 
           <Modal
