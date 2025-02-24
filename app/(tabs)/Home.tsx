@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, Pressable } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-// import { LineChart } from "react-native-svg-charts";
-// import { VictoryChart, VictoryTheme, VictoryAxis, VictoryLine } from "victory-native";
+
 import Octicons from '@expo/vector-icons/Octicons';
 import { useRouter } from "expo-router";
 import { PlusCircle } from "lucide-react-native";
@@ -64,7 +63,7 @@ const HomeScreen: React.FC = () => {
               <Octicons name="chevron-down" size={22} color="gray"/>
             </TouchableOpacity>
           </View>
-          <View className="w-1/6 justify-end flex-row">
+          <View className="w-1/6 justify-end flex-row">           
             <TouchableOpacity
             onPress={() => router.push("/home/notification")}
             >
@@ -91,36 +90,9 @@ const HomeScreen: React.FC = () => {
           </View>
         </View>
 
-        {/* Spend Frequency Chart */}
-        {/* <View className="mt-6">
-          <Text className="text-gray-600 font-semibold">Spend Frequency</Text>
-          <LineChart
-            style={{ height: 100, marginTop: 10 }}
-            data={[10, 20, 10, 40, 20, 50, 30]}
-            svg={{ stroke: "purple", strokeWidth: 2 }}
-            contentInset={{ top: 20, bottom: 20 }}
-          />
-        </View> */}
-
-        {/* <View className="mt-6">
-          <Text className="text-gray-600 font-semibold">Spend Frequency</Text>
-          <VictoryChart theme={VictoryTheme.material}>
-            <VictoryAxis />
-            <VictoryAxis dependentAxis />
-            <VictoryLine
-              data={[
-                { x: 1, y: 10 },
-                { x: 2, y: 20 },
-                { x: 3, y: 10 },
-                { x: 4, y: 40 },
-                { x: 5, y: 20 },
-                { x: 6, y: 50 },
-                { x: 7, y: 30 }
-              ]}
-              style={{ data: { stroke: "purple", strokeWidth: 2 } }}
-            />
-          </VictoryChart>
-        </View> */}
+        <View>
+          Col Chart
+        </View>
 
         <View className="mt-6">
           <View className="flex-row justify-between items-center">
