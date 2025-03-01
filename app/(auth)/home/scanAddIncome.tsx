@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator,Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import { MediaTypeOptions } from './../node_modules/expo-image-picker/build/ImagePicker.types';
+import { MediaTypeOptions } from '../../..//node_modules/expo-image-picker/build/ImagePicker.types';
 
 const GOOGLE_VISION_API_KEY = "AIzaSyA6AjixXUNl-y2egUortvsH8H6G8w0azpg"; // 🔑 Nhập API Key của bạn
 
