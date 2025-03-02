@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, Pressable } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-
 import Octicons from '@expo/vector-icons/Octicons';
 import { useRouter } from "expo-router";
 import { PlusCircle } from "lucide-react-native";
+import { BarChart } from "react-native-chart-kit";
+import { Dimensions } from "react-native";
 
 const HomeScreen: React.FC = () => {
   const transactions = [
@@ -42,6 +43,21 @@ const HomeScreen: React.FC = () => {
   
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
+
+  const chartData = {
+    labels: ["Jan", "Feb"],
+    income: [540, 700], // Income data
+    expense: [400, 600], // Expense data
+  };
+  
+  // Chuyển đổi dữ liệu để hiển thị hai cột tách biệt
+  const formattedData = {
+    labels: chartData.labels,
+    datasets: [
+      { data: chartData.income }, // Income (Xanh)
+      { data: chartData.expense }, // Expense (Đỏ)
+    ],
+  };
 
   return (
     <ScrollView className="bg-gray-100 pt-10">
@@ -90,8 +106,27 @@ const HomeScreen: React.FC = () => {
           </View>
         </View>
 
-        <View>
-          Col Chart
+        <View className="mt-5 px-4">
+          <Text className="text-lg font-bold mb-3 text-center">Monthly Financial Overview</Text>
+          <BarChart
+            data={formattedData}
+            width={Dimensions.get("window").width - 40} // Responsive width
+            height={250}
+            yAxisLabel="$"
+            yAxisSuffix=""
+            fromZero
+            chartConfig={{
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
+              decimalPlaces: 0,
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Màu chữ
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              barPercentage: 0.6, // Điều chỉnh độ rộng cột
+              propsForBackgroundLines: { strokeDasharray: "4" },
+            }}
+            style={{ borderRadius: 10, alignSelf: "center" }}
+            showValuesOnTopOfBars
+          />
         </View>
 
         <View className="mt-6">
