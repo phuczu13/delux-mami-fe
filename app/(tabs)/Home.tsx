@@ -8,6 +8,13 @@ import { BarChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 
 const HomeScreen: React.FC = () => {
+
+  const iconColors: Record<string, string> = {
+    "text-yellow-500": "#eab308",
+    "text-purple-500": "#9333ea",
+    "text-red-500": "#ef4444",
+  };
+
   const transactions = [
     {
       id: 1,
@@ -22,7 +29,7 @@ const HomeScreen: React.FC = () => {
     {
       id: 2,
       category: "Salary",
-      icon: "subscriptions",
+      icon: "money",
       amount: "+ $80",
       status: "Income",
       time: "06:50 PM",
@@ -94,13 +101,13 @@ const HomeScreen: React.FC = () => {
         </View>
 
         <View className="mt-4 flex-row justify-between">
-          <View className="bg-green-100 p-3 rounded-lg flex-row items-center space-x-2">
-            <FontAwesome name="arrow-up" size={16} className="text-green-600" />
+          <View className="bg-green-100 p-3 rounded-lg flex-row items-center gap-1">
+            <FontAwesome name="arrow-up" size={16} color="green" />
             <Text className="text-green-600 font-semibold">Income</Text>
             <Text className="text-green-700 font-bold">$5678</Text>
           </View>
-          <View className="bg-red-100 p-3 rounded-lg flex-row items-center space-x-2">
-            <FontAwesome name="arrow-down" size={16} className="text-red-600" />
+          <View className="bg-red-100 p-3 rounded-lg flex-row items-center gap-1">
+            <FontAwesome name="arrow-down" size={16} color="red" />
             <Text className="text-red-600 font-semibold">Expenses</Text>
             <Text className="text-red-700 font-bold">$1234</Text>
           </View>
@@ -144,12 +151,12 @@ const HomeScreen: React.FC = () => {
               <View className="flex-row items-center space-x-3">
                 <View className={`p-2 rounded-full ${item.color}`}>
                   {item.category === "Shopping" ? (
-                    <FontAwesome name={item.icon as any} size={20} className={item.iconColor} />
+                      <FontAwesome name={item.icon as any} size={20} color={iconColors[item.iconColor] || "black"} />
                   ) : (
-                    <MaterialIcons name={item.icon as any} size={20} className={item.iconColor} />
+                      <MaterialIcons name={item.icon as any} size={20} color={iconColors[item.iconColor] || "black"} />
                   )}
                 </View>
-                <View>
+                <View className="ml-2">
                   <Text className="font-semibold text-gray-800">{item.category}</Text>
                   <Text className={item.status === "Income" ? "text-green-500 text-xs" : "text-red-500 text-xs"}>
                     {item.status}
@@ -182,7 +189,7 @@ const HomeScreen: React.FC = () => {
               <View className="bg-white p-4 rounded-t-[30px] w-full">
                 <Text className="text-lg font-bold text-center mb-4">Category</Text>
                 <Pressable
-                  className="bg-[#65e090] p-3 rounded-lg mb-2"
+                  className="bg-[#1fb255] p-3 rounded-lg mb-2"
                   onPress={() => { router.push("/(auth)/home/income");
                   setModalVisible(false);
                   }}
@@ -190,7 +197,7 @@ const HomeScreen: React.FC = () => {
                   <Text className="text-white text-center">Add new income</Text>
                 </Pressable>
                 <Pressable
-                  className="bg-[#e04b4b] p-3 rounded-lg mb-2"
+                  className="bg-red-600 p-3 rounded-lg mb-2"
                   onPress={() => {
                     router.push("/(auth)/home/expenses")
                     setModalVisible(false);

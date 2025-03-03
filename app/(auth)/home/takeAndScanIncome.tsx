@@ -89,7 +89,10 @@ const takeAndScanIncome = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-      <Button title="📷 Chụp Ảnh" onPress={pickImage} />
+      <View className='border rounded-full px-3'>
+      <Button title="Scan" onPress={pickImage} />
+
+      </View>
 
       {imageUri && <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, marginTop: 10 }} />}
 

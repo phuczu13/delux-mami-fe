@@ -1,63 +1,71 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-
-const transactions = [
-  {
-    id: 1,
-    category: "Shopping",
-    icon: "shopping-bag",
-    amount: "- $120",
-    description: "Buy some grocery",
-    time: "10:00 AM",
-    color: "bg-yellow-100",
-    iconColor: "text-yellow-500",
-  },
-  {
-    id: 2,
-    category: "Subscription",
-    icon: "file-invoice-dollar",
-    amount: "- $80",
-    description: "Disney+ Annual..",
-    time: "03:30 PM",
-    color: "bg-purple-100",
-    iconColor: "text-purple-500",
-  },
-  {
-    id: 3,
-    category: "Food",
-    icon: "utensils",
-    amount: "- $32",
-    description: "Buy a ramen",
-    time: "07:30 PM",
-    color: "bg-red-100",
-    iconColor: "text-red-500",
-  },
-  {
-    id: 4,
-    category: "Salary",
-    icon: "dollar-sign",
-    amount: "+ $5000",
-    description: "Salary for July",
-    time: "04:30 PM",
-    color: "bg-green-100",
-    iconColor: "text-green-500",
-  },
-  {
-    id: 5,
-    category: "Transportation",
-    icon: "car",
-    amount: "- $18",
-    description: "Charging Tesla",
-    time: "08:30 PM",
-    color: "bg-blue-100",
-    iconColor: "text-blue-500",
-  },
-];
+import { FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 const TransactionScreen: React.FC = () => {
+
+  const iconColors: Record<string, string> = {
+    "text-yellow-500": "#eab308",
+    "text-purple-500": "#9333ea",
+    "text-red-500": "#ef4444",
+  };
+
+  const transactions = [
+    {
+      id: 1,
+      category: "Shopping",
+      icon: "shopping-bag",
+      amount: "- $120",
+      description: "Buy some clothes",
+      time: "10:00 AM",
+      color: "bg-yellow-100",
+      iconColor: "text-yellow-500",
+    },
+    {
+      id: 2,
+      category: "Wallet",
+      icon: "credit-card",
+      amount: "- $80",
+      description: "Open card",
+      time: "03:30 PM",
+      color: "bg-purple-100",
+      iconColor: "text-purple-500",
+    },
+    {
+      id: 3,
+      category: "Book",
+      icon: "book",  // Dùng FontAwesome5 để hỗ trợ tốt hơn
+      amount: "- $32",
+      description: "Buy a Conan",
+      time: "07:30 PM",
+      color: "bg-red-100",
+      iconColor: "text-red-500",
+    },
+    
+    {
+      id: 4,
+      category: "Salary",
+      icon: "money",
+      amount: "+ $5000",
+      description: "Salary for July",
+      time: "04:30 PM",
+      color: "bg-green-100",
+      iconColor: "text-green-500",
+    },
+    {
+      id: 5,
+      category: "Transportation",
+      icon: "car",
+      amount: "- $18",
+      description: "Charging Tesla",
+      time: "08:30 PM",
+      color: "bg-blue-100",
+      iconColor: "text-blue-500",
+    },
+  ];
+
   return (
-    <ScrollView className="bg-white pt-10">
+    <ScrollView className="bg-gray-100 pt-10">
       <View className="p-5">
         <View className="flex-row justify-between items-center mt-4">
           <TouchableOpacity className="flex-row items-center px-4 py-2 bg-gray-100 rounded-full">
@@ -82,7 +90,7 @@ const TransactionScreen: React.FC = () => {
           {transactions.slice(0, 3).map((item) => (
             <View key={item.id} className="flex-row items-center bg-gray-50 p-3 rounded-lg mb-3">
               <View className={`p-3 rounded-full ${item.color}`}>
-                <FontAwesome5 name={item.icon} size={18} className={item.iconColor} />
+                <FontAwesome name={item.icon as any} size={18} color={iconColors[item.iconColor] || "black"} />
               </View>
               <View className="flex-1 ml-3">
                 <Text className="font-semibold">{item.category}</Text>
@@ -101,7 +109,7 @@ const TransactionScreen: React.FC = () => {
           {transactions.slice(3).map((item) => (
             <View key={item.id} className="flex-row items-center bg-gray-50 p-3 rounded-lg mb-3">
               <View className={`p-3 rounded-full ${item.color}`}>
-                <FontAwesome5 name={item.icon} size={18} className={item.iconColor} />
+                <FontAwesome name={item.icon as any} size={18} color={item.iconColor} />
               </View>
               <View className="flex-1 ml-3">
                 <Text className="font-semibold">{item.category}</Text>

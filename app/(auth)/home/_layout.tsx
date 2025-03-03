@@ -10,6 +10,11 @@ export default function HomeLayout() {
       <Stack.Screen name="notification" />
       <Stack.Screen name="list-transaction" />
 
+      <Stack.Screen name="scanAddExpense" />
+      <Stack.Screen name="scanAddIncome" />
+      <Stack.Screen name="takeAndScanExpense" />
+      <Stack.Screen name="takeAndScanIncome" />
+
 
     </Stack>
   );

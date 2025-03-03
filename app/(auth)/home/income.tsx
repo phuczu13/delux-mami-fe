@@ -34,7 +34,7 @@ const IncomeScreen = () => {
 
   return (
     <ScrollView className="flex-1 bg-white">
-      <View className="bg-[#1fb255] p-6 rounded-b-3xl">
+      <View className="bg-[#1fb255] px-5 pt-14 pb-5 rounded-b-3xl">
         <View className='flex-row justify-between items-center text-center'>
           <TouchableOpacity className=""
           onPress={() => router.push("/(tabs)/Home")}
@@ -42,7 +42,9 @@ const IncomeScreen = () => {
             <Ionicons name="chevron-back" size={24} color="white" />
           </TouchableOpacity>
           <Text className="text-white text-center text-xl font-bold">Income</Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => router.push('/(auth)/home/takeAndScanIncome')}
+          >
             <Image
               source={{ uri: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhs82CuyRUTbXTJnqEnCZnffO6R6OBOmrplqM1D9rwJN-e-taTZ-_R-XHWU0SPTmPHtovxAO34DgPXze1bAejaLUC5UDXTpTY6jMKic0vLOAX4IdynpNV2oJW1E2-nPM4gqkUhgkw/s0/unitag_qrcode.png" }}
               className="w-10 h-10"
@@ -50,7 +52,7 @@ const IncomeScreen = () => {
           </TouchableOpacity>
         </View>
         <Text className="text-white text-lg mt-4">How much?</Text>
-        <TextInput className='text-white text-5xl' 
+        <TextInput className='text-white text-4xl' 
         value={value}
         onChangeText={handleChange}
         onFocus={handleFocus}

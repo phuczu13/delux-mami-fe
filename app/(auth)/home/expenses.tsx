@@ -34,7 +34,7 @@ const ExpensesScreen = () => {
   
   return (
     <ScrollView className="flex-1 bg-white">
-      <View className="bg-red-600 p-6 rounded-b-3xl">
+      <View className="bg-red-600 px-5 pt-14 pb-5 rounded-b-3xl">
         <View className='flex-row justify-between items-center text-center'>
           <TouchableOpacity className=""
           onPress={() => router.push("/(tabs)/Home")}

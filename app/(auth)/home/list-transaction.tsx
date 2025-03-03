@@ -7,6 +7,13 @@ import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 
 const ListTransaction = () => {
     const router = useRouter();
+
+    const iconColors: Record<string, string> = {
+      "text-yellow-500": "#eab308",
+      "text-purple-500": "#9333ea",
+      "text-red-500": "#ef4444",
+    };
+
     const transactions = [
         {
           id: 1,
@@ -21,7 +28,7 @@ const ListTransaction = () => {
         {
           id: 2,
           category: "Salary",
-          icon: "subscriptions",
+          icon: "money",
           amount: "+ $80",
           status: "Income",
           time: "06:50 PM",
@@ -51,7 +58,7 @@ const ListTransaction = () => {
           {
             id: 5,
             category: "Salary",
-            icon: "subscriptions",
+            icon: "money",
             amount: "+ $80",
             status: "Income",
             time: "06:50 PM",
@@ -72,14 +79,20 @@ const ListTransaction = () => {
     ];
 
   return (
-    <ScrollView>
+    <ScrollView className='bg-gray-100'>
         <View className='pt-10'>
           <View className='p-5'>
-            <View className='flex-row items-center gap-4'>
-                <TouchableOpacity className="bg-slate-200 flex justify-center items-center w-10 h-10 rounded-full" onPress={() => router.push('/Home')}>
+            <View className='flex-row justify-between w-full items-center'>
+                <View>
+                  <TouchableOpacity className="bg-slate-200 flex justify-center items-center w-10 h-10 rounded-full" onPress={() => router.push('/Home')}>
                     <Ionicons name="chevron-back" size={24} color="black" />
-                </TouchableOpacity>
-                <Text className='text-2xl w-full text-center font-semibold'>History Transaction</Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Text className='text-2xl w-full text-center font-semibold'>History Transaction</Text>
+                </View>
+                <View className="w-10">
+                </View>
             </View>
             <View className='mt-5'>
                 {transactions.map((item) => (
@@ -87,20 +100,22 @@ const ListTransaction = () => {
                     <View className="flex-row items-center space-x-3">
                         <View className={`p-2 rounded-full ${item.color}`}>
                         {item.category === "Shopping" ? (
-                            <FontAwesome name={item.icon as any} size={20} className={item.iconColor} />
+                            <FontAwesome name={item.icon as any} size={20} color={iconColors[item.iconColor] || "black"} />
                         ) : (
-                            <MaterialIcons name={item.icon as any} size={20} className={item.iconColor} />
+                            <MaterialIcons name={item.icon as any} size={20} color={iconColors[item.iconColor] || "black"} />
                         )}
                         </View>
                         <View>
-                        <Text className="font-semibold text-gray-800">{item.category}</Text>
-                        <Text className={item.status === "Income" ? "text-green-500 text-xs" : "text-red-500 text-xs"}>
-                            {item.status}
-                        </Text>
+                        <View className='ml-2'>
+                          <Text className="font-semibold text-gray-800">{item.category}</Text>
+                          <Text className={item.status === "Income" ? "text-green-500 text-xs" : "text-red-500 text-xs"}>
+                              {item.status}
+                          </Text>
+                        </View>
                         </View>
                     </View>
                     <View className="items-end">
-                        <Text className={item.status === "Income" ? "text-green-500 font-semibold" : "text-red-500 font-semibold"}>{item.amount}</Text>
+                        <Text className={item.status === "Income" ? "text-green-500 font-bold" : "text-red-500 font-bold"}>{item.amount}</Text>
                         <Text className="text-gray-400 text-xs">{item.time}</Text>
                     </View>
                     </View>
