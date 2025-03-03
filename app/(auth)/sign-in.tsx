@@ -1,11 +1,31 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState, useCallback } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
+import auth from "@react-native-firebase/auth";
 
 const SignInScreen = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const signIn = useCallback(async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Lỗi", "Vui lòng nhập đầy đủ email và mật khẩu!");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      Alert.alert("Thành công", "Đăng nhập thành công!");
+      router.push("/(tabs)/Home");
+    } catch (error: any) {
+      Alert.alert("Lỗi", error.message || "Đăng nhập thất bại!");
+    } finally {
+      setLoading(false);
+    }
+  }, [email, password, router]);
 
   return (
     <View className="flex-1 bg-white justify-center px-5">
@@ -14,23 +34,26 @@ const SignInScreen = () => {
 
         <TextInput
           className="p-5 bg-gray-200 rounded-lg mb-4"
-          placeholder="Email or phone number"
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
           className="p-5 bg-gray-200 rounded-lg mb-8"
-          placeholder="Enter password"
+          placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
 
         <TouchableOpacity
-          className="bg-green-600 p-4 rounded-lg items-center"
-          onPress={() => router.push('/(tabs)/Home')}
+          className={`bg-green-600 p-4 rounded-lg items-center ${loading ? "opacity-50" : ""}`}
+          onPress={signIn}
+          disabled={loading}
         >
-          <Text className="text-white font-semibold">Login</Text>
+          {loading ? <ActivityIndicator color="#fff" /> : <Text className="text-white font-semibold">Login</Text>}
         </TouchableOpacity>
 
         <View className="flex items-center mt-5">

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "879458059351",
+    "project_id": "curxor-mobile",
+    "storage_bucket": "curxor-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879458059351:android:c402ee7d01172eb66f8f12",
+        "android_client_info": {
+          "package_name": "com.diepvanthanh.curxormobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879458059351-i43a7tccask1tpr958pajhk70bt9cet1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.diepvanthanh.curxormobile",
+            "certificate_hash": "86ffb957f21724a942839420dc4536b475967152"
+          }
+        },
+        {
+          "client_id": "879458059351-t17fmand1gefv7lnftmgt3ul6qfk0vd1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg-eYbPg-_CdA3EMpi8aaS4e3OIfcGfKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879458059351-t17fmand1gefv7lnftmgt3ul6qfk0vd1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
