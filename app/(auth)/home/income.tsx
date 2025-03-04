@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, View, Text, TextInput, TouchableOpacity, Switch, Image } from 'react-native';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, Switch, Image ,Modal,Pressable} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import "nativewind";
 import { useRouter } from 'expo-router';
@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 const IncomeScreen = () => {
   const [repeat, setRepeat] = useState(false);
   const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [value, setValue] = useState("$0");
 
@@ -43,7 +44,7 @@ const IncomeScreen = () => {
           </TouchableOpacity>
           <Text className="text-white text-center text-xl font-bold">Income</Text>
           <TouchableOpacity
-          onPress={() => router.push('/(auth)/home/takeAndScanIncome')}
+          onPress={() => setModalVisible(true)}
           >
             <Image
               source={{ uri: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhs82CuyRUTbXTJnqEnCZnffO6R6OBOmrplqM1D9rwJN-e-taTZ-_R-XHWU0SPTmPHtovxAO34DgPXze1bAejaLUC5UDXTpTY6jMKic0vLOAX4IdynpNV2oJW1E2-nPM4gqkUhgkw/s0/unitag_qrcode.png" }}
@@ -74,6 +75,36 @@ const IncomeScreen = () => {
         <TouchableOpacity className="bg-purple-600 p-4 rounded-lg">
           <Text className="text-white text-center text-lg font-bold">Continue</Text>
         </TouchableOpacity>
+
+        //Modal chọn phương thức nhập dữ liệu
+        <Modal transparent visible={modalVisible} animationType="fade">
+        <Pressable className="flex-1 justify-center bg-black/50" onPress={() => setModalVisible(false)}>
+          <View className="bg-white p-6 rounded-lg mx-10 items-center">
+            <Text className="text-lg font-semibold mb-4">Chọn phương thức nhập dữ liệu</Text>
+
+            <TouchableOpacity
+              className="bg-blue-500 p-4 rounded-lg w-52 items-center mb-3"
+              onPress={() => {
+                setModalVisible(false);
+                router.push("/(auth)/home/takeAndScanIncome");
+              }}
+            >
+              <Text className="text-white font-semibold">📷 Chụp ảnh</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              className="bg-green-500 p-4 rounded-lg w-52 items-center"
+              onPress={() => {
+                setModalVisible(false);
+                router.push("/(auth)/home/scanAddIncome");
+              }}
+            >
+              <Text className="text-white font-semibold">🖼 Chọn ảnh từ thư viện</Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Modal>
+        
       </View>
     </ScrollView>
   );

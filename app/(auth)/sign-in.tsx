@@ -48,7 +48,7 @@ const SignInScreen = () => {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity
+        <TouchableOpacity accessibilityRole="button"
           className={`bg-green-600 p-4 rounded-lg items-center ${loading ? "opacity-50" : ""}`}
           onPress={signIn}
           disabled={loading}
