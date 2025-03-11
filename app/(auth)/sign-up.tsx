@@ -48,9 +48,10 @@ const SignUpScreen = () => {
   return (
     <View className="flex-1 bg-white justify-center px-5">
       <View className="mt-5">
-        <Text className="text-2xl text-center font-bold mb-6">Register</Text>
+        <Text testID="register-title" className="text-2xl text-center font-bold mb-6">Register</Text>
 
         <TextInput
+          testID="email-input"
           className="p-5 bg-gray-200 rounded-lg mb-4"
           placeholder="Email"
           keyboardType="email-address"
@@ -59,6 +60,7 @@ const SignUpScreen = () => {
           onChangeText={setEmail}
         />
         <TextInput
+          testID="password-input"
           className="p-5 bg-gray-200 rounded-lg mb-4"
           placeholder="Enter password"
           secureTextEntry
@@ -66,6 +68,7 @@ const SignUpScreen = () => {
           onChangeText={setPassword}
         />
         <TextInput
+          testID="confirm-password-input"
           className="p-5 bg-gray-200 rounded-lg mb-8"
           placeholder="Confirm password"
           secureTextEntry
@@ -74,6 +77,7 @@ const SignUpScreen = () => {
         />
 
         <TouchableOpacity
+          testID="register-button"
           className={`bg-green-600 p-4 rounded-lg items-center ${loading ? "opacity-50" : ""}`}
           onPress={signUp}
           disabled={loading}
@@ -82,7 +86,7 @@ const SignUpScreen = () => {
         </TouchableOpacity>
 
         <View className="flex items-center mt-5">
-          <TouchableOpacity onPress={() => router.push("/sign-in")}>
+          <TouchableOpacity testID="navigate-signin" onPress={() => router.push("/sign-in")}>
             <Text className="text-green-500 font-semibold">Do you already have an account?</Text>
           </TouchableOpacity>
         </View>

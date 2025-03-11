@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/18</span>
+                <span class='fraction'>16/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/10</span>
+                <span class='fraction'>8/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/18</span>
+                <span class='fraction'>16/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -132,36 +132,44 @@
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,29 +221,30 @@ const SignInScreen = () =&gt; {
   const [loading, setLoading] = useState(false);
 &nbsp;
   const signIn = useCallback(async () =&gt; {
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (!email.trim() || <span class="branch-1 cbranch-no" title="branch not covered" >!password.trim())</span> {
+    if (!email.trim() || !password.trim()) {
       Alert.alert("Lỗi", "Vui lòng nhập đầy đủ email và mật khẩu!");
       return;
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    setLoading(true);</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      await auth().signInWithEmailAndPassword(email, password);</span>
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Thành công", "Đăng nhập thành công!");</span>
-<span class="cstat-no" title="statement not covered" >      router.push("/(tabs)/Home");</span>
+    setLoading(true);
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      Alert.alert("Thành công", "Đăng nhập thành công!");
+      router.push("/(tabs)/Home");
     } catch (error: any) {
 <span class="cstat-no" title="statement not covered" >      Alert.alert("Lỗi", error.message || "Đăng nhập thất bại!");</span>
     } finally {
-<span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
+      setLoading(false);
     }
   }, [email, password, router]);
 &nbsp;
   return (
     &lt;View className="flex-1 bg-white justify-center px-5"&gt;
       &lt;View className="mt-5"&gt;
-        &lt;Text className="text-2xl text-center font-bold mb-6"&gt;Login&lt;/Text&gt;
+        &lt;Text testID="login-title" className="text-2xl text-center font-bold mb-6"&gt;Login&lt;/Text&gt;
 &nbsp;
         &lt;TextInput
+          testID="email-input"
           className="p-5 bg-gray-200 rounded-lg mb-4"
           placeholder="Email"
           keyboardType="email-address"
@@ -244,6 +253,7 @@ const SignInScreen = () =&gt; {
           onChangeText={setEmail}
         /&gt;
         &lt;TextInput
+          testID="password-input"
           className="p-5 bg-gray-200 rounded-lg mb-8"
           placeholder="Password"
           secureTextEntry
@@ -251,16 +261,18 @@ const SignInScreen = () =&gt; {
           onChangeText={setPassword}
         /&gt;
 &nbsp;
-        &lt;TouchableOpacity accessibilityRole="button"
-          className={`bg-green-600 p-4 rounded-lg items-center ${loading ? <span class="branch-0 cbranch-no" title="branch not covered" >"opacity-50" </span>: ""}`}
+        &lt;TouchableOpacity
+          testID="login-button"
+          accessibilityRole="button"
+          className={`bg-green-600 p-4 rounded-lg items-center ${loading ? "opacity-50" : ""}`}
           onPress={signIn}
           disabled={loading}
         &gt;
-          {loading ? <span class="branch-0 cbranch-no" title="branch not covered" >&lt;ActivityIndicator color="#fff" /&gt; </span>: &lt;Text className="text-white font-semibold"&gt;Login&lt;/Text&gt;}
+          {loading ? &lt;ActivityIndicator testID="loading-indicator" color="#fff" /&gt; : &lt;Text className="text-white font-semibold"&gt;Login&lt;/Text&gt;}
         &lt;/TouchableOpacity&gt;
 &nbsp;
         &lt;View className="flex items-center mt-5"&gt;
-          &lt;TouchableOpacity onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >router.push("/sign-up")}</span>&gt;
+          &lt;TouchableOpacity testID="signup-button" onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >router.push("/sign-up")}</span>&gt;
             &lt;Text className="text-green-500 font-semibold"&gt;Are you a new user?&lt;/Text&gt;
           &lt;/TouchableOpacity&gt;
         &lt;/View&gt;
@@ -277,7 +289,7 @@ export default SignInScreen;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-04T01:52:38.853Z
+                at 2025-03-11T01:31:29.209Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

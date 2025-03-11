@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -94,20 +94,36 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,29 +146,37 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 &nbsp;
-const SettingsScreen = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+const SettingsScreen = () =&gt; {
+  const router = useRouter();
 &nbsp;
-    const router = <span class="cstat-no" title="statement not covered" >useRouter();</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    return (</span>
-        &lt;ScrollView className="bg-white px-4 pt-14"&gt;
-        &lt;View className=""&gt;
-            &lt;TouchableOpacity className="bg-slate-200 flex justify-center items-center w-10 h-10 rounded-full"
-            onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >router.push ('/Profile')}</span>
-            &gt;
-                &lt;Ionicons name="chevron-back" size={24} color="black" /&gt;
-            &lt;/TouchableOpacity&gt;
-        &lt;/View&gt;
-&nbsp;
-        &lt;View className="items-center"&gt;
-            &lt;Text className="text-gray-700 text-2xl"&gt;Setting Screen&lt;/Text&gt;
-        &lt;/View&gt;
-&nbsp;
-        &lt;TouchableOpacity className="bg-purple-600 p-4 rounded-full mx-6 mt-6 items-center"&gt;
-            &lt;Text className="text-white font-semibold"&gt;Save&lt;/Text&gt;
+  return (
+    &lt;ScrollView testID="settings-screen" className="bg-white px-4 pt-14"&gt;
+      &lt;View testID="back-button-container"&gt;
+        &lt;TouchableOpacity
+          testID="back-button"
+          className="bg-slate-200 flex justify-center items-center w-10 h-10 rounded-full"
+          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >router.push("/Profile")}</span>
+        &gt;
+          &lt;Ionicons name="chevron-back" size={24} color="black" /&gt;
         &lt;/TouchableOpacity&gt;
-        &lt;/ScrollView&gt;
-    );
+      &lt;/View&gt;
+&nbsp;
+      &lt;View testID="title-container" className="items-center"&gt;
+        &lt;Text testID="settings-title" className="text-gray-700 text-2xl"&gt;
+          Setting Screen
+        &lt;/Text&gt;
+      &lt;/View&gt;
+&nbsp;
+      &lt;TouchableOpacity
+        testID="save-button"
+        className="bg-purple-600 p-4 rounded-full mx-6 mt-6 items-center"
+      &gt;
+        &lt;Text testID="save-button-text" className="text-white font-semibold"&gt;
+          Save
+        &lt;/Text&gt;
+      &lt;/TouchableOpacity&gt;
+    &lt;/ScrollView&gt;
+  );
 };
 &nbsp;
 export default SettingsScreen;
@@ -163,7 +187,7 @@ export default SettingsScreen;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-04T01:52:38.853Z
+                at 2025-03-11T01:31:29.209Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

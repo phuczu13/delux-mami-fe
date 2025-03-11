@@ -30,9 +30,10 @@ const SignInScreen = () => {
   return (
     <View className="flex-1 bg-white justify-center px-5">
       <View className="mt-5">
-        <Text className="text-2xl text-center font-bold mb-6">Login</Text>
+        <Text testID="login-title" className="text-2xl text-center font-bold mb-6">Login</Text>
 
         <TextInput
+          testID="email-input"
           className="p-5 bg-gray-200 rounded-lg mb-4"
           placeholder="Email"
           keyboardType="email-address"
@@ -41,6 +42,7 @@ const SignInScreen = () => {
           onChangeText={setEmail}
         />
         <TextInput
+          testID="password-input"
           className="p-5 bg-gray-200 rounded-lg mb-8"
           placeholder="Password"
           secureTextEntry
@@ -48,16 +50,18 @@ const SignInScreen = () => {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity accessibilityRole="button"
+        <TouchableOpacity
+          testID="login-button"
+          accessibilityRole="button"
           className={`bg-green-600 p-4 rounded-lg items-center ${loading ? "opacity-50" : ""}`}
           onPress={signIn}
           disabled={loading}
         >
-          {loading ? <ActivityIndicator color="#fff" /> : <Text className="text-white font-semibold">Login</Text>}
+          {loading ? <ActivityIndicator testID="loading-indicator" color="#fff" /> : <Text className="text-white font-semibold">Login</Text>}
         </TouchableOpacity>
 
         <View className="flex items-center mt-5">
-          <TouchableOpacity onPress={() => router.push("/sign-up")}>
+          <TouchableOpacity testID="signup-button" onPress={() => router.push("/sign-up")}>
             <Text className="text-green-500 font-semibold">Are you a new user?</Text>
           </TouchableOpacity>
         </View>
