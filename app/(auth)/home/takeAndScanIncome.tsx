@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
-import { View, Button, Image, ActivityIndicator, Alert, Text, ScrollView, TouchableOpacity } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
+import React, { useState } from "react";
+import {
+  View,
+  Button,
+  Image,
+  ActivityIndicator,
+  Alert,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
+import auth from "@react-native-firebase/auth";
 
 const GOOGLE_CLOUD_VISION_API_KEY = "AIzaSyA6AjixXUNl-y2egUortvsH8H6G8w0azpg"; // 🔑 Thay bằng API Key của bạn
 const BACKEND_API_URL = "https://expense-tracker-be-three.vercel.app/API/AI"; // API backend
@@ -10,11 +20,15 @@ const takeAndScanIncome = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [textResult, setTextResult] = useState<string | null>(null);
+  const user = auth().currentUser;
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    if (permissionResult.status !== 'granted') {
-      Alert.alert('Permission required', 'Camera access is needed to take pictures.');
+    if (permissionResult.status !== "granted") {
+      Alert.alert(
+        "Permission required",
+        "Camera access is needed to take pictures."
+      );
       return;
     }
 
@@ -38,10 +52,12 @@ const takeAndScanIncome = () => {
       const response = await axios.post(
         `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_CLOUD_VISION_API_KEY}`,
         {
-          requests: [{
-            image: { content: base64 },
-            features: [{ type: 'TEXT_DETECTION' }],
-          }],
+          requests: [
+            {
+              image: { content: base64 },
+              features: [{ type: "TEXT_DETECTION" }],
+            },
+          ],
         }
       );
 
@@ -49,13 +65,16 @@ const takeAndScanIncome = () => {
       if (textAnnotations && textAnnotations.length > 0) {
         setTextResult(textAnnotations[0].description);
       } else {
-        setTextResult('Không tìm thấy văn bản nào!');
+        setTextResult("Không tìm thấy văn bản nào!");
       }
 
-      Alert.alert('Success', 'Image processed successfully! Check result below.');
+      Alert.alert(
+        "Success",
+        "Image processed successfully! Check result below."
+      );
     } catch (error) {
-      console.error('Error uploading image:', error);
-      Alert.alert('Error', 'Failed to process image.');
+      console.error("Error uploading image:", error);
+      Alert.alert("Error", "Failed to process image.");
     } finally {
       setLoading(false);
     }
@@ -73,40 +92,80 @@ const takeAndScanIncome = () => {
     try {
       const response = await axios.post(
         BACKEND_API_URL,
-        { userPrompt: prompt },
+
+        { userID: user?.uid || "", userPrompt: prompt },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      
+
       console.log("Response:", response.data);
       Alert.alert("Thành công", "Dữ liệu đã được gửi lên API!");
     } catch (error: any) {
-      console.error("Lỗi khi gửi dữ liệu:", error.response?.data || error.message);
+      console.error(
+        "Lỗi khi gửi dữ liệu:",
+        error.response?.data || error.message
+      );
       Alert.alert("Lỗi", "Không thể gửi dữ liệu. Vui lòng thử lại!");
     }
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-      <View className='border rounded-full px-3'>
-      <Button title="Scan" onPress={pickImage} />
-
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+      }}
+    >
+      <View className="border rounded-full px-3">
+        <Button title="Scan" onPress={pickImage} />
       </View>
 
-      {imageUri && <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, marginTop: 10 }} />}
+      {imageUri && (
+        <Image
+          source={{ uri: imageUri }}
+          style={{ width: 200, height: 200, marginTop: 10 }}
+        />
+      )}
 
-      {loading && <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 10 }} />}
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={{ marginTop: 10 }}
+        />
+      )}
 
       {textResult && (
-        <ScrollView style={{ marginTop: 20, maxHeight: 300, width: "100%", backgroundColor: "#f0f0f0", padding: 10, borderRadius: 10 }}>
+        <ScrollView
+          style={{
+            marginTop: 20,
+            maxHeight: 300,
+            width: "100%",
+            backgroundColor: "#f0f0f0",
+            padding: 10,
+            borderRadius: 10,
+          }}
+        >
           <Text>{textResult}</Text>
         </ScrollView>
       )}
 
       {textResult && (
-        <TouchableOpacity onPress={postTransaction} style={{ backgroundColor: "#28A745", padding: 15, borderRadius: 10, marginTop: 20 }}>
-          <Text style={{ color: "white", fontWeight: "bold" }}>📤 Gửi Dữ Liệu</Text>
+        <TouchableOpacity
+          onPress={postTransaction}
+          style={{
+            backgroundColor: "#28A745",
+            padding: 15,
+            borderRadius: 10,
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            📤 Gửi Dữ Liệu
+          </Text>
         </TouchableOpacity>
       )}
     </View>

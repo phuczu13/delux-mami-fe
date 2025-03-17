@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator,Aler
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { MediaTypeOptions } from '../../..//node_modules/expo-image-picker/build/ImagePicker.types';
+import auth from "@react-native-firebase/auth";
+
 
 const GOOGLE_VISION_API_KEY = "AIzaSyA6AjixXUNl-y2egUortvsH8H6G8w0azpg"; // 🔑 Nhập API Key của bạn
 
@@ -10,6 +12,8 @@ const scanAddExpense = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [textResult, setTextResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const user = auth().currentUser;
+
 
   // 🖼️ Chọn ảnh từ thư viện
   const pickImage = async () => {
@@ -75,8 +79,6 @@ const scanAddExpense = () => {
     });
   };
 
-let prompt ="Hóa đơn thanh toán " + textResult;
-console.log("Đây là prompt "+prompt);
 
 const postTransaction = async () => {
   if (!textResult) {
@@ -85,12 +87,13 @@ const postTransaction = async () => {
   }
 
   const prompt = `Hóa đơn thanh toán: ${textResult}`;
-  console.log("Prompt gửi đi:", prompt);
+ 
 
   try {
     const response = await axios.post(
       "https://expense-tracker-be-three.vercel.app/API/AI",
-      { userPrompt: prompt }, // Đảm bảo gửi đúng định dạng object
+      { userID: user?.uid || "",
+        userPrompt: prompt }, // Đảm bảo gửi đúng định dạng object
       {
         headers: {
           "Content-Type": "application/json", // Xác định kiểu dữ liệu gửi đi

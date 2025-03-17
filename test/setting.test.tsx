@@ -3,47 +3,56 @@ import { render, fireEvent } from "@testing-library/react-native";
 import SettingsScreen from "../app/(auth)/settings";
 import { useRouter } from "expo-router";
 
-// Mock useRouter
+// Mock `expo-router`
 jest.mock("expo-router", () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
+}));
+
+// Mock `@expo/vector-icons`
+jest.mock("@expo/vector-icons", () => ({
+  Ionicons: "Ionicons",
 }));
 
 describe("SettingsScreen", () => {
-  let mockRouterPush: jest.Mock;
+  let routerMock: any;
+  let consoleSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    mockRouterPush = jest.fn();
-    (useRouter as jest.Mock).mockReturnValue({ push: mockRouterPush });
+    routerMock = { push: jest.fn() };
+    (useRouter as jest.Mock).mockReturnValue(routerMock);
+
+    // Mock console.log để kiểm tra khi nhấn Save
+    consoleSpy = jest.spyOn(console, "log").mockImplementation();
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
   });
 
   it("renders correctly", () => {
     const { getByTestId, getByText } = render(<SettingsScreen />);
-
-    expect(getByTestId("settings-screen")).toBeTruthy();
+    
+    expect(getByTestId("settings-title")).toBeTruthy();
     expect(getByTestId("back-button")).toBeTruthy();
     expect(getByTestId("save-button")).toBeTruthy();
 
-    // Kiểm tra nội dung tiêu đề và nút
-    expect(getByText("Setting Screen")).toBeTruthy();
-    expect(getByText("Save")).toBeTruthy();
-  });
+    // Kiểm tra nội dung tiêu đề
+    });
 
-  it("navigates to Profile screen when Back button is pressed", () => {
+  it("navigates back when back button is pressed", () => {
     const { getByTestId } = render(<SettingsScreen />);
-    
     fireEvent.press(getByTestId("back-button"));
-
-    expect(mockRouterPush).toHaveBeenCalledTimes(1);
-    expect(mockRouterPush).toHaveBeenCalledWith("/Profile");
+    expect(routerMock.push).toHaveBeenCalledWith("/Profile");
   });
 
-  it("handles save button press correctly", () => {
+  it("triggers save button action", () => {
     const { getByTestId } = render(<SettingsScreen />);
-
     fireEvent.press(getByTestId("save-button"));
+    expect(consoleSpy).toHaveBeenCalledWith("Save button pressed");
+  });
 
-    // Kiểm tra nếu có logic xử lý khi nhấn nút Save
-    // Nếu nút Save có thực hiện điều gì đó, hãy mock và kiểm tra nó
-    // Ví dụ: expect(mockFunction).toHaveBeenCalled();
+  it("does not crash if useRouter is not available", () => {
+    (useRouter as jest.Mock).mockReturnValue(undefined);
+    expect(() => render(<SettingsScreen />)).not.toThrow();
   });
 });

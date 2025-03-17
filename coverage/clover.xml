@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1741656689292" clover="3.2.0">
-  <project timestamp="1741656689292" name="All files">
-    <metrics statements="360" coveredstatements="49" conditionals="169" coveredconditionals="20" methods="95" coveredmethods="9" elements="624" coveredelements="78" complexity="0" loc="360" ncloc="360" packages="6" files="28" classes="28"/>
+<coverage generated="1741664971249" clover="3.2.0">
+  <project timestamp="1741664971249" name="All files">
+    <metrics statements="361" coveredstatements="51" conditionals="169" coveredconditionals="20" methods="96" coveredmethods="11" elements="626" coveredelements="82" complexity="0" loc="361" ncloc="361" packages="6" files="28" classes="28"/>
     <package name="delux-mami-fe">
       <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="metro.config.js" path="D:\delux-mami-fe\metro.config.js">
@@ -43,7 +43,7 @@
       </file>
     </package>
     <package name="delux-mami-fe.app.(auth)">
-      <metrics statements="66" coveredstatements="49" conditionals="27" coveredconditionals="20" methods="17" coveredmethods="9"/>
+      <metrics statements="67" coveredstatements="51" conditionals="27" coveredconditionals="20" methods="18" coveredmethods="11"/>
       <file name="_layout.tsx" path="D:\delux-mami-fe\app\(auth)\_layout.tsx">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="5" count="0" type="stmt"/>
@@ -72,20 +72,21 @@
         <line num="27" count="1" type="stmt"/>
       </file>
       <file name="settings.tsx" path="D:\delux-mami-fe\app\(auth)\settings.tsx">
-        <metrics statements="4" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="7" count="7" type="stmt"/>
-        <line num="9" count="7" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
       </file>
       <file name="sign-in.tsx" path="D:\delux-mami-fe\app\(auth)\sign-in.tsx">
         <metrics statements="18" coveredstatements="16" conditionals="10" coveredconditionals="8" methods="3" coveredmethods="2"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="7" count="16" type="stmt"/>
-        <line num="8" count="16" type="stmt"/>
-        <line num="9" count="15" type="stmt"/>
-        <line num="10" count="15" type="stmt"/>
-        <line num="12" count="15" type="stmt"/>
+        <line num="7" count="15" type="stmt"/>
+        <line num="8" count="15" type="stmt"/>
+        <line num="9" count="14" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="12" count="14" type="stmt"/>
         <line num="13" count="4" type="cond" truecount="4" falsecount="0"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
@@ -96,7 +97,7 @@
         <line num="22" count="2" type="stmt"/>
         <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="26" count="2" type="stmt"/>
-        <line num="30" count="15" type="stmt"/>
+        <line num="30" count="14" type="stmt"/>
         <line num="64" count="0" type="stmt"/>
       </file>
       <file name="sign-up.tsx" path="D:\delux-mami-fe\app\(auth)\sign-up.tsx">

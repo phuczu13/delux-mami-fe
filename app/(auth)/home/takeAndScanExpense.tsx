@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Button, Image, ActivityIndicator, Alert, Text, ScrollView, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import auth from "@react-native-firebase/auth";
+
 
 const GOOGLE_CLOUD_VISION_API_KEY = "AIzaSyA6AjixXUNl-y2egUortvsH8H6G8w0azpg"; // 🔑 Thay bằng API Key của bạn
 const BACKEND_API_URL = "https://expense-tracker-be-three.vercel.app/API/AI"; // API backend
@@ -10,6 +12,8 @@ const takeAndScanExpense = () => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [textResult, setTextResult] = useState<string | null>(null);
+  const user = auth().currentUser;
+
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -73,7 +77,8 @@ const takeAndScanExpense = () => {
     try {
       const response = await axios.post(
         BACKEND_API_URL,
-        { userPrompt: prompt },
+        { userID: user?.uid || "",
+          userPrompt: prompt },
         {
           headers: { "Content-Type": "application/json" },
         }

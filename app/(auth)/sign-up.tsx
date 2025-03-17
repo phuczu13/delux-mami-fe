@@ -12,28 +12,38 @@ const SignUpScreen = () => {
 
   const validateEmail = (email: string) => /\S+@\S+\.\S+/.test(email);
 
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    return passwordRegex.test(password);
+  };
+
   const signUp = useCallback(async () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
       return;
     }
-
+  
     if (!validateEmail(email)) {
       Alert.alert("Lỗi", "Định dạng email không hợp lệ!");
       return;
     }
-
-    if (password.length < 6) {
-      Alert.alert("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự!");
+  
+    if (!validatePassword(password)) {
+      Alert.alert(
+        "Lỗi",
+        "Mật khẩu phải có ít nhất 6 ký tự, bao gồm ít nhất một chữ cái in hoa, một chữ số và một ký tự đặc biệt!"
+      );
       return;
     }
-
+  
     if (password !== confirmPassword) {
       Alert.alert("Lỗi", "Mật khẩu xác nhận không khớp!");
       return;
     }
-
+  
+    // Đặt loading thành true ngay lập tức
     setLoading(true);
+    
     try {
       await auth().createUserWithEmailAndPassword(email, password);
       Alert.alert("Thành công", "Vui lòng kiểm tra email để xác nhận tài khoản!");
@@ -82,7 +92,7 @@ const SignUpScreen = () => {
           onPress={signUp}
           disabled={loading}
         >
-          {loading ? <ActivityIndicator color="#fff" /> : <Text className="text-white font-semibold">Register</Text>}
+          {loading ? <ActivityIndicator testID="loading-indicator" color="#fff" /> : <Text className="text-white font-semibold">Register</Text>}
         </TouchableOpacity>
 
         <View className="flex items-center mt-5">
