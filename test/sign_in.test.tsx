@@ -4,19 +4,117 @@ import SignInScreen from "../app/(auth)/sign-in";
 import { useRouter } from "expo-router";
 import auth from "@react-native-firebase/auth";
 import { Alert } from "react-native";
+import { renderHook } from "@testing-library/react";
+import { useCallback } from "react";
 
 // Mock Firebase Auth
-jest.mock("@react-native-firebase/auth", () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
+jest.mock("@react-native-firebase/auth", () => {
+  const mockAuth = {
     signInWithEmailAndPassword: jest.fn(),
-  })),
-}));
+  };
+
+  return {
+    __esModule: true,
+    default: jest.fn(() => mockAuth),
+  };
+});
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 // Mock Expo Router
 jest.mock("expo-router", () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
 }));
+
+describe("Login", () => {
+  let setLoading: jest.Mock;
+  let signIn: (email: string, password: string) => Promise<void>;
+
+  beforeEach(() => {
+    setLoading = jest.fn();
+
+    const { result } = renderHook(() =>
+      useCallback(async (inputEmail: string, inputPassword: string) => {
+        if (!inputEmail.trim() || !inputPassword.trim()) {
+          throw new Error("Vui lòng nhập đầy đủ email và mật khẩu!");
+        }
+
+        setLoading(true);
+        try {
+          await auth().signInWithEmailAndPassword(inputEmail, inputPassword);
+        } catch (error: any) {
+          throw new Error(error.message || "Đăng nhập thất bại!");
+        } finally {
+          setLoading(false);
+        }
+      }, [])
+    );
+
+    signIn = result.current;
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("Báo lỗi khi email hoặc mật khẩu trống", async () => {
+    await expect(signIn("", "")).rejects.toThrow(
+      "Vui lòng nhập đầy đủ email và mật khẩu!"
+    );
+  });
+
+  it("Gọi auth.signInWithEmailAndPassword khi nhập đúng email & password", async () => {
+    (auth().signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({});
+
+    await act(async () => {
+      await expect(
+        signIn("diepvanthanh24@gmail.com", "Diepvanthanh1@")
+      ).resolves.not.toThrow();
+    });
+
+    console.log((auth().signInWithEmailAndPassword as jest.Mock).mock.calls);
+    expect(auth().signInWithEmailAndPassword).toHaveBeenCalledTimes(1);
+    expect(auth().signInWithEmailAndPassword).toHaveBeenCalledWith(
+      "diepvanthanh24@gmail.com",
+      "Diepvanthanh1@"
+    );
+    expect(setLoading).toHaveBeenCalledTimes(2);
+  });
+
+  it("Xử lý lỗi khi nhập sai email hoặc mật khẩu", async () => {
+    (auth().signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
+      new Error("Sai email hoặc mật khẩu")
+    );
+  
+    await act(async () => {
+      await expect(
+        signIn("wrongemail@gmail.com", "WrongPassword123")
+      ).rejects.toThrow("Sai email hoặc mật khẩu");
+    });
+  
+    expect(auth().signInWithEmailAndPassword).toHaveBeenCalledTimes(1);
+    expect(auth().signInWithEmailAndPassword).toHaveBeenCalledWith(
+      "wrongemail@gmail.com",
+      "WrongPassword123"
+    );
+    expect(setLoading).toHaveBeenCalledTimes(2);
+  });
+
+  it("Xử lý lỗi khi đăng nhập thất bại", async () => {
+    (auth().signInWithEmailAndPassword as jest.Mock).mockRejectedValueOnce(
+      new Error("Sai mật khẩu")
+    );
+
+    await expect(signIn("test@example.com", "wrongpassword")).rejects.toThrow(
+      "Sai mật khẩu"
+    );
+  });
+});
+
+// Mock setImmediate cho Jest khi sử dụng Alert
+global.setImmediate = global.setImmediate || ((fn: (...args: any[]) => void, ...args: any[]) => setTimeout(fn, 0));
 
 describe("SignInScreen", () => {
   let mockRouterPush: jest.Mock;
@@ -51,11 +149,14 @@ describe("SignInScreen", () => {
 
   it("displays an error alert if email or password is empty", () => {
     const { getByTestId } = render(<SignInScreen />);
-    
+
     fireEvent.press(getByTestId("login-button"));
 
     expect(mockSignIn).not.toHaveBeenCalled();
-    expect(alertSpy).toHaveBeenCalledWith("Lỗi", "Vui lòng nhập đầy đủ email và mật khẩu!");
+    expect(alertSpy).toHaveBeenCalledWith(
+      "Lỗi",
+      "Vui lòng nhập đầy đủ email và mật khẩu!"
+    );
   });
 
   it("calls Firebase sign-in when valid credentials are entered", async () => {
@@ -98,7 +199,10 @@ describe("SignInScreen", () => {
 
     await waitFor(() => {
       expect(mockRouterPush).toHaveBeenCalledWith("/(tabs)/Home");
-      expect(alertSpy).toHaveBeenCalledWith("Thành công", "Đăng nhập thành công!");
+      expect(alertSpy).toHaveBeenCalledWith(
+        "Thành công",
+        "Đăng nhập thành công!"
+      );
     });
   });
 
