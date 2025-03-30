@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator,Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import { MediaTypeOptions } from '../../..//node_modules/expo-image-picker/build/ImagePicker.types';
+import { MediaTypeOptions } from "../../..//node_modules/expo-image-picker/build/ImagePicker.types";
 import auth from "@react-native-firebase/auth";
-
 
 const GOOGLE_VISION_API_KEY = "AIzaSyA6AjixXUNl-y2egUortvsH8H6G8w0azpg"; // 🔑 Nhập API Key của bạn
 
@@ -14,8 +21,6 @@ const scanAddIncome = () => {
   const [loading, setLoading] = useState(false);
   const user = auth().currentUser;
 
-
-
   // 🖼️ Chọn ảnh từ thư viện
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -24,9 +29,18 @@ const scanAddIncome = () => {
       quality: 1,
     });
 
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-      recognizeText(result.assets[0].uri);
+    if (!result.canceled && result.assets.length > 0) {
+      const selectedImageUri = result.assets[0].uri;
+
+      if (!selectedImageUri) {
+        Alert.alert("Lỗi", "Không thể lấy đường dẫn ảnh!");
+        return;
+      }
+
+      setImageUri(selectedImageUri);
+      recognizeText(selectedImageUri);
+    } else {
+      Alert.alert("Lỗi", "Bạn chưa chọn ảnh nào!");
     }
   };
 
@@ -80,55 +94,93 @@ const scanAddIncome = () => {
     });
   };
 
+  const postTransaction = async () => {
+    if (!textResult) {
+      Alert.alert("Lỗi", "Không có dữ liệu để gửi!");
+      return;
+    }
 
+    const prompt = `Hóa đơn thu nhập: ${textResult}`;
+    console.log("Prompt gửi đi:", prompt);
 
-const postTransaction = async () => {
-  if (!textResult) {
-    Alert.alert("Lỗi", "Không có dữ liệu để gửi!");
-    return;
-  }
-
-  const prompt = `Hóa đơn thu nhập: ${textResult}`;
-  console.log("Prompt gửi đi:", prompt);
-
-  try {
-    const response = await axios.post(
-      "https://expense-tracker-be-three.vercel.app/API/AI",
-      { userID: user?.uid || "",
-        userPrompt: prompt }, // Đảm bảo gửi đúng định dạng object
-      {
-        headers: {
-          "Content-Type": "application/json", // Xác định kiểu dữ liệu gửi đi
+    try {
+      const response = await axios.post(
+        "https://expense-tracker-be-three.vercel.app/API/AI",
+        {
+          userID: user?.uid || "",
+          userPrompt: prompt,
         },
-      }
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    console.log("Response:", response.data);  
-  } catch (error: any) {
-    console.error("Lỗi khi gửi dữ liệu:", error.response?.data || error.message);
-    Alert.alert("Lỗi", "Không thể gửi dữ liệu. Vui lòng thử lại!");
-  }
-};
+      console.log("Response:", response.data);
+
+      // 🟢 Thêm thông báo khi gửi thành công
+      Alert.alert("Thành công", "Hóa đơn đã được tạo thành công!");
+    } catch (error: any) {
+      console.error(
+        "Lỗi khi gửi dữ liệu:",
+        error.response?.data || error.message
+      );
+      Alert.alert("Lỗi", "Không thể gửi dữ liệu. Vui lòng thử lại!");
+    }
+  };
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 20 }}>
-      <TouchableOpacity onPress={pickImage} style={{ backgroundColor: "#007AFF", padding: 15, borderRadius: 10 }}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+      }}
+    >
+      <TouchableOpacity
+        onPress={pickImage}
+        style={{ backgroundColor: "#007AFF", padding: 15, borderRadius: 10 }}
+      >
         <Text style={{ color: "white", fontWeight: "bold" }}>📷 Chọn Ảnh</Text>
       </TouchableOpacity>
 
-      {imageUri && <Image source={{ uri: imageUri }} style={{ width: 200, height: 200, marginTop: 20 }} />}
+      {imageUri && (
+        <Image
+          source={{ uri: imageUri }}
+          style={{ width: 200, height: 200, marginTop: 20 }}
+        />
+      )}
 
-      {loading && <ActivityIndicator size="large" color="#007AFF" style={{ marginTop: 20 }} />}
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color="#007AFF"
+          style={{ marginTop: 20 }}
+        />
+      )}
 
-      {/* {textResult && (
+      {textResult && (
         <ScrollView style={{ marginTop: 20, maxHeight: 300, width: "100%", backgroundColor: "#f0f0f0", padding: 10, borderRadius: 10 }}>
           <Text>{textResult}</Text>
         </ScrollView>
-      )} */}
+      )}
 
       {/* 📤 Nút gửi dữ liệu */}
       {textResult && (
-        <TouchableOpacity onPress={postTransaction} style={{ backgroundColor: "#28A745", padding: 15, borderRadius: 10, marginTop: 20 }}>
-          <Text style={{ color: "white", fontWeight: "bold" }}>📤 Gửi Dữ Liệu</Text>
+        <TouchableOpacity
+          onPress={postTransaction}
+          style={{
+            backgroundColor: "#28A745",
+            padding: 15,
+            borderRadius: 10,
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            📤 Gửi Dữ Liệu
+          </Text>
         </TouchableOpacity>
       )}
     </View>

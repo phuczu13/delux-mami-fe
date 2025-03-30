@@ -19,6 +19,8 @@ jest.mock("expo-router", () => ({
   useRouter: jest.fn(),
 }));
 
+
+
 // Mock Alert
 jest.spyOn(Alert, "alert").mockImplementation(() => {});
 describe("Sign Up", () => {
@@ -56,7 +58,7 @@ describe("Sign Up", () => {
     expect(Alert.alert).toHaveBeenCalledWith("Lỗi", "Định dạng email không hợp lệ!");
   });
 
-  it("Báo lỗi khi mật khẩu không đủ mạnh", () => {
+  it("Báo lỗi khi mật khẩu không có chữ cái in hoa", () => {
     const { getByTestId } = render(<SignUpScreen />);
 
     fireEvent.changeText(getByTestId("email-input"), "test@example.com");
@@ -69,6 +71,16 @@ describe("Sign Up", () => {
       "Lỗi",
       "Mật khẩu phải có ít nhất 6 ký tự, bao gồm ít nhất một chữ cái in hoa, một chữ số và một ký tự đặc biệt!"
     );
+  });
+
+  it("Báo lỗi khi mật khẩu không có chữ số", () => {
+    const { getByTestId } = render(<SignUpScreen />);
+    fireEvent.changeText(getByTestId("email-input"), "DVT41557@gmail.com");
+    fireEvent.changeText(getByTestId("password-input"), "Password@");
+    fireEvent.changeText(getByTestId("confirm-password-input"), "Password@");
+
+    fireEvent.press(getByTestId("register-button"));
+    expect(Alert.alert).toHaveBeenCalledWith("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự, bao gồm ít nhất một chữ cái in hoa, một chữ số và một ký tự đặc biệt!");
   });
 
   it("Báo lỗi khi mật khẩu xác nhận không khớp", () => {
@@ -88,14 +100,14 @@ describe("Sign Up", () => {
 
     const { getByTestId } = render(<SignUpScreen />);
 
-    fireEvent.changeText(getByTestId("email-input"), "test@example.com");
-    fireEvent.changeText(getByTestId("password-input"), "Password@123");
-    fireEvent.changeText(getByTestId("confirm-password-input"), "Password@123");
+    fireEvent.changeText(getByTestId("email-input"), "DVT41557@gmail.com");
+    fireEvent.changeText(getByTestId("password-input"), "Diepvanthanh1@");
+    fireEvent.changeText(getByTestId("confirm-password-input"), "Diepvanthanh1@");
 
     fireEvent.press(getByTestId("register-button"));
 
     await waitFor(() => {
-      expect(mockCreateUser).toHaveBeenCalledWith("test@example.com", "Password@123");
+      expect(mockCreateUser).toHaveBeenCalledWith("DVT41557@gmail.com", "Diepvanthanh1@");
     }, { timeout: 3000 });
 
     expect(Alert.alert).toHaveBeenCalledWith("Thành công", "Vui lòng kiểm tra email để xác nhận tài khoản!");
@@ -117,6 +129,17 @@ describe("Sign Up", () => {
       expect(Alert.alert).toHaveBeenCalledWith("Lỗi", "Lỗi Firebase!");
     }, { timeout: 3000 });
   });
+  it("Báo lỗi khi mật khẩu và nhập lại mật khẩu không giống nhau", async () => {
+    const { getByTestId } = render(<SignUpScreen />);
+    fireEvent.changeText(getByTestId("email-input"), "Diepvanthanh1@gmail.com");
+    fireEvent.changeText(getByTestId("password-input"), "Diepvanthanh1@");
+    fireEvent.changeText(getByTestId("confirm-password-input"), "Thanhciute178@");
+    fireEvent.press(getByTestId("register-button"));
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith("Lỗi", "Mật khẩu xác nhận không khớp!");
+    }
+    );
+  })
 });
 
 describe("SignUpScreen", () => {

@@ -28,6 +28,24 @@ jest.mock("expo-router", () => ({
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }));
 
+// Dữ liệu user giả dùng để kiểm thử
+const user = [{
+  "id": 1,
+  "email": "DVT41557@gmail.com",
+  "password": "Diepvanthanh1@",
+},
+{
+  "id": 2,
+  "email": "thanhciute17",
+  "password": "DVT41557a@",
+},
+{
+  "id": 3,
+  "email": "phucpham21109@gmail.com",
+  "password": "Nagn13@@",
+},
+];
+
 describe("Login", () => {
   let setLoading: jest.Mock;
   let signIn: (email: string, password: string) => Promise<void>;
@@ -64,6 +82,50 @@ describe("Login", () => {
       "Vui lòng nhập đầy đủ email và mật khẩu!"
     );
   });
+
+  it("Đăng nhập thành công khi kiểm tra tài khoản có tồn tại", async () => {
+    const mockSignIn = auth().signInWithEmailAndPassword as jest.Mock;
+    const mockRouterPush = jest.fn();
+    (useRouter as jest.Mock).mockReturnValue({ push: mockRouterPush });
+  
+    // Lặp qua danh sách user và kiểm tra từng tài khoản
+    for (const u of user) {
+      if (u.email && u.password) {
+        // Giả lập Firebase trả về user ID
+        mockSignIn.mockResolvedValueOnce({ user: { uid: `uid-${u.id}` } });
+  
+        await act(async () => {
+          await signIn(u.email, u.password);
+        });
+  
+        // Kiểm tra đăng nhập với email & password của từng user
+        expect(mockSignIn).toHaveBeenCalledWith(u.email, u.password);
+  
+        // Kiểm tra điều hướng sau khi đăng nhập
+        expect(mockRouterPush).toHaveBeenCalledWith("/(tabs)/Home");
+      }
+    }
+  });
+
+  it("Đăng nhập thất bại khi kiểm tra tài khoản không tồn tại", async () => {})
+
+  it("Đăng nhập thất bại khi sai mật khẩu", async () => {
+    const mockSignIn = auth().signInWithEmailAndPassword as jest.Mock;
+    const mockRouterPush = jest.fn();
+    (useRouter as jest.Mock).mockReturnValue({ push: mockRouterPush });
+
+    //Lặp qua danh sách user và kiểm tra từng tài khoản
+    for (const u of user) {
+      if (u.email && u.password) {
+        // Giả lập Firebase trả về lỗi khi đăng nhập
+        mockSignIn.mockRejectedValueOnce(new Error("Sai mật khẩu"));
+
+        await expect(signIn(u.email, "wrongpassword")).rejects.toThrow(
+          "Sai mật khẩu"
+        );
+      }
+    }
+  })
 
   it("Gọi auth.signInWithEmailAndPassword khi nhập đúng email & password", async () => {
     (auth().signInWithEmailAndPassword as jest.Mock).mockResolvedValueOnce({});
