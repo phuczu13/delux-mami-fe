@@ -1,14 +1,22 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Image, TouchableOpacity, Modal, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+  Button,
+} from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import Octicons from '@expo/vector-icons/Octicons';
+import Octicons from "@expo/vector-icons/Octicons";
 import { useRouter } from "expo-router";
 import { PlusCircle } from "lucide-react-native";
 import { BarChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 
 const HomeScreen: React.FC = () => {
-
   const iconColors: Record<string, string> = {
     "text-yellow-500": "#eab308",
     "text-purple-500": "#9333ea",
@@ -47,7 +55,7 @@ const HomeScreen: React.FC = () => {
       iconColor: "text-red-500",
     },
   ];
-  
+
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -56,7 +64,7 @@ const HomeScreen: React.FC = () => {
     income: [540, 700], // Income data
     expense: [400, 600], // Expense data
   };
-  
+
   // Chuyển đổi dữ liệu để hiển thị hai cột tách biệt
   const formattedData = {
     labels: chartData.labels,
@@ -71,25 +79,25 @@ const HomeScreen: React.FC = () => {
       <View className="p-5">
         <View className="flex-row w-full justify-between items-center">
           <View className="w-1/6">
-            <TouchableOpacity 
-            onPress={() => router.push("/(tabs)/Profile")}
-            >
+            <TouchableOpacity onPress={() => router.push("/(tabs)/Profile")}>
               <Image
-                source={{ uri: "https://i.pinimg.com/736x/37/31/e7/3731e7e191d56c77907c8b8eb87e93da.jpg" }}
+                source={{
+                  uri: "https://i.pinimg.com/736x/37/31/e7/3731e7e191d56c77907c8b8eb87e93da.jpg",
+                }}
                 className="w-12 h-12 rounded-full border-[#7F3DFF] border"
               />
             </TouchableOpacity>
           </View>
           <View className="">
             <TouchableOpacity className="flex-row gap-2 items-center border border-[#7F3DFF] rounded-full px-5 py-2">
-              <Text className="text-lg text-gray-500 font-semibold">January</Text>
-              <Octicons name="chevron-down" size={22} color="gray"/>
+              <Text className="text-lg text-gray-500 font-semibold">
+                January
+              </Text>
+              <Octicons name="chevron-down" size={22} color="gray" />
             </TouchableOpacity>
           </View>
-          <View className="w-1/6 justify-end flex-row">           
-            <TouchableOpacity
-            onPress={() => router.push("/home/notification")}
-            >
+          <View className="w-1/6 justify-end flex-row">
+            <TouchableOpacity onPress={() => router.push("/home/notification")}>
               <FontAwesome name="bell" size={20} color="#7F3DFF" />
             </TouchableOpacity>
           </View>
@@ -114,7 +122,9 @@ const HomeScreen: React.FC = () => {
         </View>
 
         <View className="mt-5 px-4">
-          <Text className="text-lg font-bold mb-3 text-center">Monthly Financial Overview</Text>
+          <Text className="text-lg font-bold mb-3 text-center">
+            Monthly Financial Overview
+          </Text>
           <BarChart
             data={formattedData}
             width={Dimensions.get("window").width - 40} // Responsive width
@@ -138,47 +148,73 @@ const HomeScreen: React.FC = () => {
 
         <View className="mt-6">
           <View className="flex-row justify-between items-center">
-            <Text className="text-gray-600 font-semibold">Recent Transaction</Text>
+            <Text className="text-gray-600 font-semibold">
+              Recent Transaction
+            </Text>
             <TouchableOpacity
-            onPress={() => router.push("/(auth)/home/list-transaction")}
+              onPress={() => router.push("/(auth)/home/list-transaction")}
             >
               <Text className="text-purple-500 font-semibold">See All</Text>
             </TouchableOpacity>
           </View>
 
           {transactions.map((item) => (
-            <View key={item.id} className="flex-row justify-between items-center bg-white p-4 mt-3 rounded-lg">
+            <View
+              key={item.id}
+              className="flex-row justify-between items-center bg-white p-4 mt-3 rounded-lg"
+            >
               <View className="flex-row items-center space-x-3">
                 <View className={`p-2 rounded-full ${item.color}`}>
                   {item.category === "Shopping" ? (
-                      <FontAwesome name={item.icon as any} size={20} color={iconColors[item.iconColor] || "black"} />
+                    <FontAwesome
+                      name={item.icon as any}
+                      size={20}
+                      color={iconColors[item.iconColor] || "black"}
+                    />
                   ) : (
-                      <MaterialIcons name={item.icon as any} size={20} color={iconColors[item.iconColor] || "black"} />
+                    <MaterialIcons
+                      name={item.icon as any}
+                      size={20}
+                      color={iconColors[item.iconColor] || "black"}
+                    />
                   )}
                 </View>
                 <View className="ml-2">
-                  <Text className="font-semibold text-gray-800">{item.category}</Text>
-                  <Text className={item.status === "Income" ? "text-green-500 text-xs" : "text-red-500 text-xs"}>
+                  <Text className="font-semibold text-gray-800">
+                    {item.category}
+                  </Text>
+                  <Text
+                    className={
+                      item.status === "Income"
+                        ? "text-green-500 text-xs"
+                        : "text-red-500 text-xs"
+                    }
+                  >
                     {item.status}
                   </Text>
                 </View>
               </View>
               <View className="items-end">
-                <Text className={item.status === "Income" ? "text-green-500 font-semibold" : "text-red-500 font-semibold"}>{item.amount}</Text>
+                <Text
+                  className={
+                    item.status === "Income"
+                      ? "text-green-500 font-semibold"
+                      : "text-red-500 font-semibold"
+                  }
+                >
+                  {item.amount}
+                </Text>
                 <Text className="text-gray-400 text-xs">{item.time}</Text>
               </View>
             </View>
           ))}
-
         </View>
         <View className="flex-col items-center text-center mt-6">
-          <TouchableOpacity
-            className="p-2"
+          <Button
+            title="Add"
             onPress={() => setModalVisible(true)}
-          >
-            <PlusCircle size={32} color="black" />
-          </TouchableOpacity>
-
+            color="black"
+          />
           <Modal
             animationType="slide"
             transparent={true}
@@ -187,11 +223,14 @@ const HomeScreen: React.FC = () => {
           >
             <View className="flex-1 items-center justify-end bg-black/20">
               <View className="bg-white p-4 rounded-t-[30px] w-full">
-                <Text className="text-lg font-bold text-center mb-4">Category</Text>
+                <Text className="text-lg font-bold text-center mb-4">
+                  Category
+                </Text>
                 <Pressable
                   className="bg-[#1fb255] p-3 rounded-lg mb-2"
-                  onPress={() => { router.push("/(auth)/home/income");
-                  setModalVisible(false);
+                  onPress={() => {
+                    router.push("/(auth)/home/income");
+                    setModalVisible(false);
                   }}
                 >
                   <Text className="text-white text-center">Add new income</Text>
@@ -199,11 +238,13 @@ const HomeScreen: React.FC = () => {
                 <Pressable
                   className="bg-red-600 p-3 rounded-lg mb-2"
                   onPress={() => {
-                    router.push("/(auth)/home/expenses")
+                    router.push("/(auth)/home/expenses");
                     setModalVisible(false);
                   }}
                 >
-                  <Text className="text-white text-center">Add new expense</Text>
+                  <Text className="text-white text-center">
+                    Add new expense
+                  </Text>
                 </Pressable>
                 <Pressable
                   className="bg-gray-400 p-3 rounded-lg"

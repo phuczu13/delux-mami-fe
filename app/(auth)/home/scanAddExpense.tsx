@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator, Alert, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import { MediaTypeOptions } from '../../..//node_modules/expo-image-picker/build/ImagePicker.types';
 import auth from "@react-native-firebase/auth";
-import { useRouter } from "expo-router";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
-import * as Animatable from 'react-native-animatable';
-
-const { width } = Dimensions.get('window');
 
 const GOOGLE_VISION_API_KEY = "AIzaSyA6AjixXUNl-y2egUortvsH8H6G8w0azpg"; // 🔑 Nhập API Key của bạn
 
@@ -19,7 +19,6 @@ const scanAddExpense = () => {
   const [textResult, setTextResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const user = auth().currentUser;
-  const router = useRouter();
 
   // 🖼️ Chọn ảnh từ thư viện
   const pickImage = async () => {
@@ -29,13 +28,22 @@ const scanAddExpense = () => {
       quality: 1,
     });
 
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-      recognizeText(result.assets[0].uri);
+    if (!result.canceled && result.assets.length > 0) {
+      const selectedImageUri = result.assets[0].uri;
+
+      if (!selectedImageUri) {
+        Alert.alert("Lỗi", "Không thể lấy đường dẫn ảnh!");
+        return;
+      }
+
+      setImageUri(selectedImageUri);
+      recognizeText(selectedImageUri);
+    } else {
+      Alert.alert("Lỗi", "Bạn chưa chọn ảnh nào!");
     }
   };
 
-  // 🧠 Gửi ảnh lên Google Cloud Vision API để nhận diện văn bản
+  // 🧠 Nhận diện văn bản từ ảnh
   const recognizeText = async (imageUri: string) => {
     try {
       setLoading(true);
@@ -91,13 +99,16 @@ const scanAddExpense = () => {
       return;
     }
 
-    const prompt = `Hóa đơn thanh toán: ${textResult}`;
-   
+    const prompt = `Hóa đơn chi tiêu: ${textResult}`;
+    console.log("Prompt gửi đi:", prompt);
+
     try {
       const response = await axios.post(
         "https://expense-tracker-be-three.vercel.app/API/AI",
-        { userID: user?.uid || "",
-          userPrompt: prompt },
+        {
+          userID: user?.uid || "",
+          userPrompt: prompt,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -106,155 +117,81 @@ const scanAddExpense = () => {
       );
 
       console.log("Response:", response.data);
-      
-      // Hiển thị thông báo thành công
-      Alert.alert(
-        "Thành công",
-        "Đã xử lý hóa đơn thành công!",
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              // Điều hướng về trang home
-              router.push("/(tabs)/Home");
-            }
-          }
-        ]
-      );
 
+      // 🟢 Thêm thông báo khi gửi thành công
+      Alert.alert("Thành công", "Hóa đơn chi tiêu đã được tạo thành công!");
     } catch (error: any) {
-      console.error("Lỗi khi gửi dữ liệu:", error.response?.data || error.message);
+      console.error(
+        "Lỗi khi gửi dữ liệu:",
+        error.response?.data || error.message
+      );
       Alert.alert("Lỗi", "Không thể gửi dữ liệu. Vui lòng thử lại!");
     }
   };
 
   return (
-    <ScrollView className="flex-1 bg-[#f8f9fa]">
-      {/* Header with Gradient */}
-      <LinearGradient
-        colors={['#ff3b30', '#ff6b6b']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        className="px-5 pt-14 pb-8 rounded-b-[40px]"
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+      }}
+    >
+      <TouchableOpacity
+        onPress={pickImage}
+        style={{ backgroundColor: "#FF3B30", padding: 15, borderRadius: 10 }}
       >
-        <View className="flex-row justify-between items-center">
-          <TouchableOpacity 
-            onPress={() => router.push("/(tabs)/Home")}
-            className="bg-white/30 rounded-full p-3 backdrop-blur-lg"
-          >
-            <Ionicons name="chevron-back" size={24} color="white" />
-          </TouchableOpacity>
-          <Text className="text-white text-xl font-bold tracking-wide">Scan Bill</Text>
-          <View style={{ width: 40 }} />
-        </View>
-      </LinearGradient>
+        <Text style={{ color: "white", fontWeight: "bold" }}>📷 Chọn Ảnh</Text>
+      </TouchableOpacity>
 
-      {/* Main Content */}
-      <Animatable.View 
-        animation="fadeInUp"
-        duration={800}
-        className="flex-1 items-center justify-center p-6 -mt-6 bg-white rounded-t-[40px] shadow-lg"
-      >
-        <View className="w-full max-w-md">
-          {/* Image Preview with Animation */}
-          {imageUri && (
-            <Animatable.View 
-              animation="zoomIn"
-              duration={500}
-              className="mb-6 items-center"
-            >
-              <View className="shadow-2xl rounded-2xl overflow-hidden">
-                <Image 
-                  source={{ uri: imageUri }} 
-                  className="w-80 h-80 rounded-2xl"
-                  resizeMode="cover"
-                />
-                <BlurView
-                  intensity={80}
-                  tint="dark"
-                  className="absolute bottom-0 w-full p-3"
-                >
-                  <Text className="text-white text-center text-sm">Tap to scan another</Text>
-                </BlurView>
-              </View>
-            </Animatable.View>
-          )}
+      {imageUri && (
+        <Image
+          source={{ uri: imageUri }}
+          style={{ width: 200, height: 200, marginTop: 20 }}
+        />
+      )}
 
-          {/* Loading Indicator with Animation */}
-          {loading && (
-            <Animatable.View 
-              animation="pulse"
-              iterationCount="infinite"
-              className="my-6 items-center"
-            >
-              <ActivityIndicator size="large" color="#ff3b30" />
-              <Text className="text-center text-gray-600 mt-3 font-medium">
-                Processing your bill...
-              </Text>
-            </Animatable.View>
-          )}
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color="#FF3B30"
+          style={{ marginTop: 20 }}
+        />
+      )}
 
-          {/* Scan Button with Shadow */}
-          <TouchableOpacity 
-            onPress={pickImage}
-            className="shadow-lg"
-          >
-            <LinearGradient
-              colors={imageUri ? ['#4CAF50', '#45a049'] : ['#ff3b30', '#ff6b6b']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              className="py-4 px-6 rounded-2xl mb-4 flex-row items-center justify-center"
-            >
-              <Ionicons 
-                name={imageUri ? "camera" : "scan-outline"} 
-                size={24} 
-                color="white" 
-              />
-              <Text className="text-white font-bold text-lg ml-3">
-                {imageUri ? 'Scan Another Bill' : 'Start Scanning'}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+      {textResult && (
+        <ScrollView
+          style={{
+            marginTop: 20,
+            maxHeight: 300,
+            width: "100%",
+            backgroundColor: "#f0f0f0",
+            padding: 10,
+            borderRadius: 10,
+          }}
+        >
+          <Text>{textResult}</Text>
+        </ScrollView>
+      )}
 
-          {/* Process Button with Animation */}
-          {textResult && (
-            <Animatable.View
-              animation="fadeInUp"
-              duration={500}
-              className="shadow-lg"
-            >
-              <TouchableOpacity 
-                onPress={postTransaction}
-                className="bg-[#28A745] py-4 px-6 rounded-2xl flex-row items-center justify-center"
-                style={{
-                  shadowColor: "#28A745",
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.3,
-                  shadowRadius: 8,
-                }}
-              >
-                <Ionicons name="cloud-upload" size={24} color="white" />
-                <Text className="text-white font-bold text-lg ml-3">
-                  Process Bill
-                </Text>
-              </TouchableOpacity>
-            </Animatable.View>
-          )}
-
-          {/* Recognized Text with Better Styling */}
-          {textResult && (
-            <Animatable.View 
-              animation="fadeIn"
-              duration={800}
-              className="mt-6 p-5 bg-gray-50 rounded-2xl border border-gray-100"
-            >
-              <Text className="text-gray-700 font-medium mb-2">Recognized Text:</Text>
-              <Text className="text-gray-600 leading-relaxed">{textResult}</Text>
-            </Animatable.View>
-          )}
-        </View>
-      </Animatable.View>
-    </ScrollView>
+      {/* 📤 Nút gửi dữ liệu */}
+      {textResult && (
+        <TouchableOpacity
+          onPress={postTransaction}
+          style={{
+            backgroundColor: "#DC3545",
+            padding: 15,
+            borderRadius: 10,
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            📤 Gửi Dữ Liệu
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 

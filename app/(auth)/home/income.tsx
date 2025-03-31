@@ -159,6 +159,19 @@ const IncomeScreen = () => {
         </TouchableOpacity>
       </View>
 
+      <DatePicker
+        modal
+        open={open}
+        date={date}
+        mode="date"
+        maximumDate={new Date()} // Ngăn chọn ngày trong tương lai
+        onConfirm={(selectedDate) => {
+          setOpen(false);
+          setDate(selectedDate);
+        }}
+        onCancel={() => setOpen(false)}
+      />
+
       {/* Modal QR */}
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View className="flex-1 justify-center items-center bg-black/50">

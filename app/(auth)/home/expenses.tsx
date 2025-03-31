@@ -165,6 +165,19 @@ const ExpenseScreen = () => {
         >
           <Text>{new Date(transaction.date).toDateString()}</Text>
         </TouchableOpacity>
+
+        <DatePicker
+          modal
+          open={open}
+          date={date}
+          mode="date"
+          maximumDate={new Date()} // Ngăn chọn ngày trong tương lai
+          onConfirm={(selectedDate) => {
+            setOpen(false);
+            setDate(selectedDate);
+          }}
+          onCancel={() => setOpen(false)}
+        />
         <TouchableOpacity
           className="bg-purple-600 p-4 rounded-lg mt-4"
           onPress={handleSubmit}
